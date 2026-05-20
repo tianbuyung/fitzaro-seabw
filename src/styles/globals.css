@@ -10,6 +10,12 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Fitzaro brand */
+  --color-primary: #E8820C;
+  --color-primary-hover: #CF720A;
+  --color-secondary: #7F77DD;
+  --color-accent: #FFC44D;
 }
 
 @media (prefers-color-scheme: dark) {
