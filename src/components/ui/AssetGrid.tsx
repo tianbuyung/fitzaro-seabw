@@ -1,13 +1,16 @@
+'use client'
+
 import type { Asset } from '@/data/mock-assets'
 import { AssetCard } from './AssetCard'
 
 interface AssetGridProps {
   assets: Asset[]
-  isLoading?: boolean
+  loading?: boolean
+  onSelect?: (asset: Asset) => void
 }
 
-export function AssetGrid({ assets, isLoading = false }: AssetGridProps) {
-  if (isLoading) {
+export function AssetGrid({ assets, loading = false, onSelect }: AssetGridProps) {
+  if (loading) {
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {Array.from({ length: 6 }).map((_, i) => (
@@ -31,7 +34,15 @@ export function AssetGrid({ assets, isLoading = false }: AssetGridProps) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {assets.map((asset) => (
-        <AssetCard key={asset.id} asset={asset} />
+        <button
+          key={asset.id}
+          type="button"
+          onClick={() => onSelect?.(asset)}
+          className="group block text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-xl"
+          aria-label={`View details for ${asset.tokenName}`}
+        >
+          <AssetCard asset={asset} />
+        </button>
       ))}
     </div>
   )

@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { type Asset, formatCurrency } from '@/data/mock-assets'
 import { RiskBadge } from './RiskBadge'
 
@@ -13,14 +12,18 @@ const ASSET_TYPE_STYLES: Record<Asset['assetType'], string> = {
   Infrastructure: 'bg-gray-100 text-gray-600',
 }
 
+/**
+ * Pure display component for a single asset.
+ *
+ * SRP: this renders one asset's summary. It does not handle navigation —
+ * the parent (e.g. AssetGrid) wraps it in whatever clickable element is
+ * appropriate for its context (button, anchor, or static).
+ */
 export function AssetCard({ asset }: AssetCardProps) {
   const typeBadgeClass = ASSET_TYPE_STYLES[asset.assetType]
 
   return (
-    <Link
-      href={`/assets/${asset.id}`}
-      className="group block rounded-xl border border-gray-200 bg-white p-5 transition-all duration-150 hover:border-primary hover:shadow-lg hover:-translate-y-0.5"
-    >
+    <div className="group block h-full rounded-xl border border-gray-200 bg-white p-5 text-left transition-all duration-150 group-hover:border-primary group-hover:shadow-lg group-hover:-translate-y-0.5">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2 text-sm text-gray-500">
           <span className="text-base leading-none" aria-hidden>
@@ -50,6 +53,6 @@ export function AssetCard({ asset }: AssetCardProps) {
         <span className="text-xs text-gray-500">Price / token</span>
         <span className="text-sm font-semibold text-gray-900">{formatCurrency(asset.tokenPrice)}</span>
       </div>
-    </Link>
+    </div>
   )
 }
