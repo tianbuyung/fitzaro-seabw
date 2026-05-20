@@ -62,7 +62,12 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(parsed)
   } catch (err) {
-    console.error('Asset structuring error:', err)
-    return NextResponse.json({ error: 'AI structuring failed. Please try again.' }, { status: 500 })
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('Asset structuring error:', message)
+    const isDev = process.env.NODE_ENV === 'development'
+    return NextResponse.json(
+      { error: isDev ? `AI structuring failed: ${message}` : 'AI structuring failed. Please try again.' },
+      { status: 500 }
+    )
   }
 }
