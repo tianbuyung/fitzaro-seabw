@@ -5,17 +5,41 @@ import { type Asset, formatCurrency } from '@/data/mock-assets'
 
 interface InvestmentCalculatorProps {
   asset: Asset
+  /**
+   * Optional controlled value. When provided alongside `onTokenAmountChange`,
+   * the calculator becomes a controlled component so a parent (e.g.
+   * `InvestorActions`) can read the current token amount for actions like
+   * "Buy Asset". Leave both undefined to use internal state.
+   */
+  value?: number
+  onTokenAmountChange?: (amount: number) => void
 }
 
 /**
  * Pure calculator for token-based investment yield projections.
  *
- * SRP: only owns the `tokenAmount` input state. All other displayed
- * values are derived in a single `useMemo` — no extra state for things
- * that can be computed.
+ * SRP: only owns the `tokenAmount` input state when uncontrolled. All
+ * other displayed values are derived in a single `useMemo` — no extra
+ * state for things that can be computed.
+ *
+ * Open/Closed: extended via optional `value` / `onTokenAmountChange` props
+ * so callers can lift state without modifying the component's internals.
  */
-export function InvestmentCalculator({ asset }: InvestmentCalculatorProps) {
-  const [tokenAmount, setTokenAmount] = useState<number>(1)
+export function InvestmentCalculator({
+  asset,
+  value,
+  onTokenAmountChange,
+}: InvestmentCalculatorProps) {
+  const isControlled = value !== undefined && onTokenAmountChange !== undefined
+  const [internalAmount, setInternalAmount] = useState<number>(1)
+  const tokenAmount = isControlled ? value : internalAmount
+  const setTokenAmount = (next: number): void => {
+    if (isControlled) {
+      onTokenAmountChange(next)
+      return
+    }
+    setInternalAmount(next)
+  }
 
   const { totalCost, annualYield, monthlyYield } = useMemo(() => {
     const safeAmount = Number.isFinite(tokenAmount) && tokenAmount > 0 ? tokenAmount : 0
