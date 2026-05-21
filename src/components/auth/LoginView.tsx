@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { usePrivy } from '@privy-io/react-auth'
-import { useUserRole } from '@/hooks/use-user-role'
+import { useUserRole, persistRole } from '@/hooks/use-user-role'
 import { AssetOwnerPanel } from './AssetOwnerPanel'
 import { InvestorPanel } from './InvestorPanel'
 
@@ -40,10 +40,12 @@ export function LoginView() {
   }
 
   const goToOwnerDashboard = (): void => {
+    persistRole('owner')
     router.replace('/owner/dashboard')
   }
 
   const goToInvestorDashboard = (): void => {
+    persistRole('investor')
     router.replace('/investor/dashboard')
   }
 

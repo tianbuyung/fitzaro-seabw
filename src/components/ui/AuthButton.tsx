@@ -1,6 +1,7 @@
 'use client'
 
 import { usePrivy } from '@privy-io/react-auth'
+import { clearPersistedRole } from '@/hooks/use-user-role'
 
 function truncateAddress(address: string): string {
   if (address.length <= 10) return address
@@ -35,6 +36,7 @@ export function AuthButton() {
         <button
           type="button"
           onClick={() => {
+            clearPersistedRole()
             void logout()
           }}
           className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"

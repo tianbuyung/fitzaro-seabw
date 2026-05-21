@@ -2,9 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { usePrivy } from '@privy-io/react-auth'
 import { OwnerNavbar } from './OwnerNavbar'
 import { OwnerAssetCard } from './OwnerAssetCard'
 import { PayoutTracker } from './PayoutTracker'
+import { useUserRole } from '@/hooks/use-user-role'
 import type { Asset } from '@/data/mock-assets'
 
 function EmptyState() {
@@ -30,8 +33,19 @@ function EmptyState() {
 }
 
 export function OwnerDashboardView() {
+  const router = useRouter()
+  const { ready, authenticated } = usePrivy()
+  const role = useUserRole()
   const [assets, setAssets] = useState<Asset[]>([])
   const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (ready && !authenticated) router.replace('/login')
+  }, [ready, authenticated, router])
+
+  useEffect(() => {
+    if (role === 'investor') router.replace('/investor/dashboard')
+  }, [role, router])
 
   useEffect(() => {
     const stored = localStorage.getItem('fitzaro-user-assets')

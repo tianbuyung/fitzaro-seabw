@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { usePrivy } from '@privy-io/react-auth'
 import { InvestorNavbar } from './InvestorNavbar'
 import { formatCurrency } from '@/data/mock-assets'
+import { useUserRole } from '@/hooks/use-user-role'
 import type { PortfolioPosition } from '@/features/portfolio/types'
 
 interface PositionCardProps {
@@ -62,8 +65,19 @@ function PositionCard({ position }: PositionCardProps) {
 }
 
 export function InvestorPortfolioView() {
+  const router = useRouter()
+  const { ready, authenticated } = usePrivy()
+  const role = useUserRole()
   const [positions, setPositions] = useState<PortfolioPosition[]>([])
   const [loaded, setLoaded] = useState(false)
+
+  useEffect(() => {
+    if (ready && !authenticated) router.replace('/login')
+  }, [ready, authenticated, router])
+
+  useEffect(() => {
+    if (role === 'owner') router.replace('/owner/dashboard')
+  }, [role, router])
 
   useEffect(() => {
     const stored = localStorage.getItem('fitzaro-portfolio')

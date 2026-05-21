@@ -1,20 +1,32 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { usePrivy } from '@privy-io/react-auth'
 import { InvestorNavbar } from './InvestorNavbar'
 import { AssetMetrics } from '@/components/ui/AssetMetrics'
 import { AssetFilters } from '@/components/ui/AssetFilters'
 import { AssetGrid } from '@/components/ui/AssetGrid'
 import { useAssets } from '@/features/assets/queries/use-assets'
+import { useUserRole } from '@/hooks/use-user-role'
 import type { Asset } from '@/data/mock-assets'
 
 const FILTER_ALL = 'All'
 
 export function InvestorMarketplaceView() {
   const router = useRouter()
+  const { ready, authenticated } = usePrivy()
+  const role = useUserRole()
   const { data: assets, isPending } = useAssets()
   const [filterType, setFilterType] = useState<string>(FILTER_ALL)
+
+  useEffect(() => {
+    if (ready && !authenticated) router.replace('/login')
+  }, [ready, authenticated, router])
+
+  useEffect(() => {
+    if (role === 'owner') router.replace('/owner/dashboard')
+  }, [role, router])
 
   const allAssets = useMemo<Asset[]>(() => assets ?? [], [assets])
 
