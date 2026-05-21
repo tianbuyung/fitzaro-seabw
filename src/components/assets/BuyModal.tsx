@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { type Asset, formatCurrency } from '@/data/mock-assets'
+import type { PortfolioPosition } from '@/features/portfolio/types'
 
 interface BuyModalProps {
   asset: Asset
@@ -18,12 +19,25 @@ export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
   const annualProfitShare = (total * asset.profitShare) / 100
 
   const handleConfirm = (): void => {
+    const stored = localStorage.getItem('fitzaro-portfolio')
+    const existing: PortfolioPosition[] = stored ? (JSON.parse(stored) as PortfolioPosition[]) : []
+    const position: PortfolioPosition = {
+      assetId: asset.id,
+      tokenName: asset.tokenName,
+      ticker: asset.ticker,
+      tokenAmount,
+      tokenPrice: asset.tokenPrice,
+      profitShare: asset.profitShare,
+      repaymentMultiple: asset.repaymentMultiple,
+      purchasedAt: new Date().toISOString(),
+    }
+    localStorage.setItem('fitzaro-portfolio', JSON.stringify([...existing, position]))
     setConfirmed(true)
   }
 
   const handleViewMarketplace = (): void => {
     onClose()
-    router.push('/dashboard')
+    router.push('/investor/dashboard')
   }
 
   return (

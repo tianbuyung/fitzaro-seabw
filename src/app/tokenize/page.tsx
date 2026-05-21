@@ -1,12 +1,5 @@
-import type { Metadata } from 'next'
-import { TokenizeView } from '@/components/tokenize/TokenizeView'
-
-export const metadata: Metadata = {
-  title: 'Tokenize Your Asset — Fitzaro',
-  description:
-    'Describe your real-world asset and let Claude AI structure it into an investable token spec.',
-}
+import { redirect } from 'next/navigation'
 
 export default function TokenizePage() {
-  return <TokenizeView />
+  redirect('/owner/tokenize')
 }

@@ -111,7 +111,11 @@ function CenteredSpinner({ label }: SpinnerProps) {
  * an authenticated user — extracting it would force every child to repeat
  * the same `usePrivy` boilerplate.
  */
-export function TokenizeView() {
+interface TokenizeViewProps {
+  postMintRedirect?: string
+}
+
+export function TokenizeView({ postMintRedirect = '/dashboard' }: TokenizeViewProps) {
   const router = useRouter()
   const { ready, authenticated } = usePrivy()
 
@@ -129,12 +133,12 @@ export function TokenizeView() {
     }
   }, [ready, authenticated, router])
 
-  // Navigate to /dashboard once the mint persists.
+  // Navigate to the post-mint destination once the mint persists.
   useEffect(() => {
     if (stage === 'done') {
-      router.push('/dashboard')
+      router.push(postMintRedirect)
     }
-  }, [stage, router])
+  }, [stage, router, postMintRedirect])
 
   if (!ready) {
     return (
