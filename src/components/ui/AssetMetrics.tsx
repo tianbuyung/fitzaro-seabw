@@ -19,18 +19,18 @@ function StatCard({ label, value }: Stat) {
 }
 
 export function AssetMetrics({ assets }: AssetMetricsProps) {
-  const totalAssets = assets.length
+  const totalBusinesses = assets.length
   const totalValueLocked = assets.reduce((sum, asset) => sum + asset.totalValue, 0)
-  const avgAPY =
-    totalAssets === 0
+  const avgProfitShare =
+    totalBusinesses === 0
       ? '—'
-      : `${(assets.reduce((sum, asset) => sum + asset.yieldAPY, 0) / totalAssets).toFixed(1)}%`
+      : `${(assets.reduce((sum, asset) => sum + asset.profitShare, 0) / totalBusinesses).toFixed(1)}%`
   const countries = new Set(assets.map((asset) => asset.country)).size
 
   const stats: Stat[] = [
-    { label: 'Total Assets', value: totalAssets.toString() },
-    { label: 'Total Value Locked', value: formatCurrency(totalValueLocked) },
-    { label: 'Avg APY', value: avgAPY },
+    { label: 'Businesses', value: totalBusinesses.toString() },
+    { label: 'Total Value', value: formatCurrency(totalValueLocked) },
+    { label: 'Avg Profit Share', value: avgProfitShare },
     { label: 'Countries', value: countries.toString() },
   ]
 

@@ -9,14 +9,6 @@ interface InvestorActionsProps {
   asset: Asset
 }
 
-/**
- * Investor-only actions for an asset: the investment calculator + a
- * prominent "Buy Asset" button that opens a confirmation modal.
- *
- * SRP: owns the cross-cutting state that links the calculator's token
- * amount to the buy modal. The calculator stays purely about projections;
- * the modal stays purely about confirmation. This component wires them.
- */
 export function InvestorActions({ asset }: InvestorActionsProps) {
   const [tokenAmount, setTokenAmount] = useState<number>(1)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -32,10 +24,10 @@ export function InvestorActions({ asset }: InvestorActionsProps) {
       >
         <header>
           <h2 className="text-lg font-semibold text-gray-900">
-            Invest in this Asset
+            Fund this Business
           </h2>
           <p className="mt-1 text-xs text-gray-500">
-            Adjust the token amount, then confirm your investment.
+            Choose your funding amount and confirm.
           </p>
         </header>
 
@@ -53,7 +45,7 @@ export function InvestorActions({ asset }: InvestorActionsProps) {
           disabled={tokenAmount <= 0}
           className="mt-6 inline-flex w-full items-center justify-center rounded-lg bg-[var(--color-primary)] px-4 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[var(--color-primary-hover)] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Buy Asset
+          Fund Business
         </button>
       </section>
 

@@ -46,21 +46,37 @@ function getFlagForCountry(country: string): string {
  * Kept pure (no hooks, no side effects) so it can be unit-tested in isolation
  * and so the orchestrator stays readable.
  */
+function getCountryCode(country: string): string {
+  const normalized = country.trim().toLowerCase()
+  switch (normalized) {
+    case 'indonesia': return 'ID'
+    case 'malaysia': return 'MY'
+    case 'thailand': return 'TH'
+    case 'vietnam': return 'VN'
+    case 'philippines': return 'PH'
+    case 'singapore': return 'SG'
+    default: return 'SEA'
+  }
+}
+
 function buildAssetFromSpec(spec: StructuredAsset, description: string): Asset {
   return {
     id: crypto.randomUUID(),
     tokenName: spec.tokenName,
     ticker: spec.ticker,
-    assetType: spec.assetType,
+    category: spec.category,
     country: spec.country,
+    countryCode: getCountryCode(spec.country),
     flag: getFlagForCountry(spec.country),
-    yieldAPY: spec.yieldAPY,
+    profitShare: spec.profitShare,
+    repaymentMultiple: spec.repaymentMultiple,
+    useOfFunds: spec.useOfFunds,
     riskScore: spec.riskScore,
     riskRationale: spec.riskRationale,
     recommendedChain: spec.recommendedChain,
     tokenSupply: spec.tokenSupply,
     tokenPrice: spec.tokenPrice,
-    investorBrief: spec.investorBrief,
+    summary: spec.summary,
     description,
     totalValue: spec.tokenSupply * spec.tokenPrice,
     holders: 1,
@@ -183,11 +199,11 @@ export function TokenizeView() {
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <header className="mx-auto mb-8 max-w-2xl text-center">
           <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-            Tokenize your asset
+            Raise capital for your business
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            Describe your real-world asset and let Claude turn it into an investable
-            token spec. You can review the spec before minting.
+            Describe your business and let Claude structure a profit-share token for you.
+            Review the spec before minting — no collateral needed.
           </p>
         </header>
 
@@ -196,7 +212,7 @@ export function TokenizeView() {
         )}
 
         {stage === 'structuring' && (
-          <CenteredSpinner label="Claude is structuring your asset…" />
+          <CenteredSpinner label="Claude is structuring your credit token…" />
         )}
 
         {stage === 'review' && structured && (

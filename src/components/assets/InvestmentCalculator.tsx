@@ -8,23 +8,13 @@ interface InvestmentCalculatorProps {
   /**
    * Optional controlled value. When provided alongside `onTokenAmountChange`,
    * the calculator becomes a controlled component so a parent (e.g.
-   * `InvestorActions`) can read the current token amount for actions like
-   * "Buy Asset". Leave both undefined to use internal state.
+   * `InvestorActions`) can read the current token amount for the "Fund Business"
+   * action. Leave both undefined to use internal state.
    */
   value?: number
   onTokenAmountChange?: (amount: number) => void
 }
 
-/**
- * Pure calculator for token-based investment yield projections.
- *
- * SRP: only owns the `tokenAmount` input state when uncontrolled. All
- * other displayed values are derived in a single `useMemo` — no extra
- * state for things that can be computed.
- *
- * Open/Closed: extended via optional `value` / `onTokenAmountChange` props
- * so callers can lift state without modifying the component's internals.
- */
 export function InvestmentCalculator({
   asset,
   value,
@@ -41,13 +31,13 @@ export function InvestmentCalculator({
     setInternalAmount(next)
   }
 
-  const { totalCost, annualYield, monthlyYield } = useMemo(() => {
+  const { totalCost, annualProfitShare, monthlyProfitShare } = useMemo(() => {
     const safeAmount = Number.isFinite(tokenAmount) && tokenAmount > 0 ? tokenAmount : 0
     const cost = safeAmount * asset.tokenPrice
-    const annual = cost * (asset.yieldAPY / 100)
+    const annual = cost * (asset.profitShare / 100)
     const monthly = annual / 12
-    return { totalCost: cost, annualYield: annual, monthlyYield: monthly }
-  }, [tokenAmount, asset.tokenPrice, asset.yieldAPY])
+    return { totalCost: cost, annualProfitShare: annual, monthlyProfitShare: monthly }
+  }, [tokenAmount, asset.tokenPrice, asset.profitShare])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const next = Number(event.target.value)
@@ -55,9 +45,6 @@ export function InvestmentCalculator({
       setTokenAmount(0)
       return
     }
-    // Clamp to [1, tokenSupply] — but allow the user to type "0" briefly
-    // by letting state hold any non-negative number; we only enforce the
-    // ceiling and a sensible floor here.
     if (next > asset.tokenSupply) {
       setTokenAmount(asset.tokenSupply)
       return
@@ -67,13 +54,13 @@ export function InvestmentCalculator({
 
   return (
     <section
-      aria-label="Investment calculator"
+      aria-label="Profit projection"
       className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100 sm:p-8"
     >
       <header>
-        <h2 className="text-lg font-semibold text-gray-900">Investment calculator</h2>
+        <h2 className="text-lg font-semibold text-gray-900">Profit projection</h2>
         <p className="mt-1 text-xs text-gray-500">
-          Estimate your potential yield. Numbers are projections, not guarantees.
+          Estimate your profit share returns. Strong months pay more; slow months pay less.
         </p>
       </header>
 
@@ -106,18 +93,18 @@ export function InvestmentCalculator({
         </div>
         <div className="rounded-xl border border-amber-100 bg-amber-50/60 px-4 py-3">
           <dt className="text-xs uppercase tracking-wide text-amber-700">
-            Annual yield
+            Annual profit share
           </dt>
           <dd className="mt-1 text-xl font-semibold text-[var(--color-primary)]">
-            {formatCurrency(annualYield)}
+            {formatCurrency(annualProfitShare)}
           </dd>
         </div>
         <div className="rounded-xl border border-amber-100 bg-amber-50/60 px-4 py-3">
           <dt className="text-xs uppercase tracking-wide text-amber-700">
-            Monthly yield
+            Monthly profit share
           </dt>
           <dd className="mt-1 text-xl font-semibold text-[var(--color-primary)]">
-            {formatCurrency(monthlyYield)}
+            {formatCurrency(monthlyProfitShare)}
           </dd>
         </div>
       </dl>

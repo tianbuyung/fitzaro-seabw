@@ -5,11 +5,8 @@ interface AssetDetailProps {
   asset: Asset
 }
 
-const ASSET_TYPE_STYLES: Record<Asset['assetType'], string> = {
-  Agricultural: 'bg-green-100 text-green-700',
-  Property: 'bg-blue-100 text-blue-700',
-  Invoice: 'bg-purple-100 text-purple-700',
-  Infrastructure: 'bg-gray-100 text-gray-600',
+const CATEGORY_STYLES: Record<Asset['category'], string> = {
+  Micro: 'bg-amber-100 text-amber-700',
 }
 
 const CHAIN_STYLES: Record<Asset['recommendedChain'], string> = {
@@ -32,15 +29,8 @@ function Stat({ label, value }: StatProps) {
   )
 }
 
-/**
- * Pure display component for the full asset profile.
- *
- * SRP: this only renders the asset's static information. It does not
- * fetch data, handle navigation, or own any state — the parent passes
- * an `asset` and this component renders it.
- */
 export function AssetDetail({ asset }: AssetDetailProps) {
-  const typeBadgeClass = ASSET_TYPE_STYLES[asset.assetType]
+  const categoryBadgeClass = CATEGORY_STYLES[asset.category]
   const chainBadgeClass = CHAIN_STYLES[asset.recommendedChain]
 
   return (
@@ -61,9 +51,9 @@ export function AssetDetail({ asset }: AssetDetailProps) {
 
         <div className="flex flex-wrap items-center gap-2">
           <span
-            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${typeBadgeClass}`}
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${categoryBadgeClass}`}
           >
-            {asset.assetType}
+            {asset.category}
           </span>
           <span
             className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${chainBadgeClass}`}
@@ -76,25 +66,30 @@ export function AssetDetail({ asset }: AssetDetailProps) {
 
       <div className="mt-6 flex items-end gap-3">
         <p className="text-3xl font-bold text-[var(--color-primary)] sm:text-4xl">
-          {asset.yieldAPY.toFixed(1)}%
+          {asset.profitShare.toFixed(1)}%
         </p>
         <p className="pb-1 text-xs uppercase tracking-wide text-gray-400">
-          Annual yield
+          Profit share
         </p>
       </div>
 
       <p className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base">
-        {asset.investorBrief}
+        {asset.summary}
       </p>
 
       <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Total value" value={formatCurrency(asset.totalValue)} />
         <Stat label="Token supply" value={asset.tokenSupply.toLocaleString()} />
         <Stat label="Token price" value={formatCurrency(asset.tokenPrice)} />
-        <Stat label="Holders" value={asset.holders.toLocaleString()} />
+        <Stat label="Repayment" value={`${asset.repaymentMultiple}x`} />
       </div>
 
-      <section className="mt-8">
+      <section className="mt-6 rounded-xl border border-amber-100 bg-amber-50/60 px-4 py-3">
+        <p className="text-xs uppercase tracking-wide text-amber-700">Use of funds</p>
+        <p className="mt-1 text-sm font-medium text-gray-900">{asset.useOfFunds}</p>
+      </section>
+
+      <section className="mt-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
           Risk rationale
         </h2>
@@ -105,7 +100,7 @@ export function AssetDetail({ asset }: AssetDetailProps) {
 
       <section className="mt-6 border-t border-gray-100 pt-6">
         <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
-          Owner description
+          Business description
         </h2>
         <p className="mt-2 whitespace-pre-line text-sm leading-relaxed text-gray-700">
           {asset.description}

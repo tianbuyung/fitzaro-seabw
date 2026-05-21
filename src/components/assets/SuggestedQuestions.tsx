@@ -5,17 +5,11 @@ interface SuggestedQuestionsProps {
 }
 
 const SUGGESTIONS: readonly string[] = [
-  "What's the risk profile of this asset?",
-  'How is the yield generated?',
-  'Is this asset suitable for first-time investors?',
+  'How does profit sharing work here?',
+  "What's the risk profile of this business?",
+  'How is the repayment structured?',
 ]
 
-/**
- * Empty-state helper for the copilot chat.
- *
- * SRP: surfaces a small set of canned questions. The parent decides
- * what happens when one is clicked (it typically pre-fills the input).
- */
 export function SuggestedQuestions({ onSelect }: SuggestedQuestionsProps) {
   return (
     <div className="flex flex-col gap-2">

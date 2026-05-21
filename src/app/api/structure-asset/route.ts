@@ -3,20 +3,22 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-const SYSTEM_PROMPT = `You are an RWA tokenization expert specializing in Southeast Asian real-world assets. Given an asset description, output ONLY valid JSON with no markdown, no code fences, and no explanation. Output exactly these fields:
-- tokenName: string (memorable 3-5 word name)
-- ticker: string (4-6 chars uppercase, e.g. RICE-WJ01)
-- assetType: one of exactly "Agricultural" | "Property" | "Invoice" | "Infrastructure"
+const SYSTEM_PROMPT = `You are a micro-business credit structuring expert specializing in Southeast Asian SMEs. Given a business description, output ONLY valid JSON with no markdown, no code fences, and no explanation. Output exactly these fields:
+- tokenName: string (memorable 3-5 word name, e.g. "Bangkok Coffee Shop")
+- ticker: string (4-8 chars uppercase with hyphen, e.g. "CAFE-BKK01")
+- category: exactly "Micro"
 - country: string (country name)
-- yieldAPY: number (realistic annual yield %, e.g. 12.0)
+- profitShare: number (realistic profit share %, e.g. 13.0 — range 8–18)
+- repaymentMultiple: number (total repayment as a multiple of principal, e.g. 1.4)
+- useOfFunds: string (short phrase describing what the capital will be used for)
 - riskScore: integer 1-10 (1=lowest risk, 10=highest)
 - riskRationale: string (1 sentence explaining the risk score)
 - recommendedChain: one of exactly "Base" | "Polygon" | "Arbitrum"
 - tokenSupply: number (total tokens to issue)
-- tokenPrice: number (price per token in USD)
-- investorBrief: string (2 sentences for investors, plain language, no crypto jargon)
+- tokenPrice: number (price per token in USD, keep small for micro businesses: $5–$25)
+- summary: string (2 sentences for investors, plain language — explain what the business does and how investors share in its profit)
 
-Output JSON only. No other text.`
+Use "profit share" not "APY" or "interest". Returns track real business performance. Output JSON only. No other text.`
 
 // Simple in-memory rate limiter
 const calls: number[] = []
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
       system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: `Asset description: ${body.description.trim()}` }],
+      messages: [{ role: 'user', content: `Business description: ${body.description.trim()}` }],
     })
 
     const text = message.content[0].type === 'text' ? message.content[0].text : ''
@@ -54,8 +56,11 @@ export async function POST(req: NextRequest) {
     const parsed = JSON.parse(clean)
 
     // Validate required fields
-    const required = ['tokenName', 'ticker', 'assetType', 'country', 'yieldAPY', 'riskScore',
-      'riskRationale', 'recommendedChain', 'tokenSupply', 'tokenPrice', 'investorBrief']
+    const required = [
+      'tokenName', 'ticker', 'category', 'country', 'profitShare', 'repaymentMultiple',
+      'useOfFunds', 'riskScore', 'riskRationale', 'recommendedChain', 'tokenSupply',
+      'tokenPrice', 'summary',
+    ]
     for (const field of required) {
       if (!(field in parsed)) throw new Error(`Missing field: ${field}`)
     }

@@ -6,18 +6,21 @@ import type { Asset } from '@/data/mock-assets'
 
 const mockAsset: Asset = {
   id: 'test-01',
-  tokenName: 'Test',
-  ticker: 'TST',
-  assetType: 'Agricultural',
+  tokenName: 'Test Business',
+  ticker: 'TST-01',
+  category: 'Micro',
   country: 'Indonesia',
+  countryCode: 'ID',
   flag: '🇮🇩',
-  yieldAPY: 10,
+  profitShare: 10,
+  repaymentMultiple: 1.4,
+  useOfFunds: 'Equipment',
   riskScore: 3,
   riskRationale: 'Low risk',
   recommendedChain: 'Base',
   tokenSupply: 1000,
   tokenPrice: 100,
-  investorBrief: 'Brief',
+  summary: 'Brief',
   description: 'Desc',
   totalValue: 100000,
   holders: 10,
@@ -25,7 +28,7 @@ const mockAsset: Asset = {
 }
 
 describe('<InvestmentCalculator />', () => {
-  it('renders default values for 1 token (cost $100, annual yield $10)', () => {
+  it('renders default values for 1 token (cost $100, annual profit share $10)', () => {
     render(<InvestmentCalculator asset={mockAsset} />)
 
     const input = screen.getByLabelText(/how many tokens/i) as HTMLInputElement
@@ -33,7 +36,7 @@ describe('<InvestmentCalculator />', () => {
 
     // Total cost = 1 * 100 = $100
     expect(screen.getByText('$100')).toBeInTheDocument()
-    // Annual yield = $100 * 10% = $10
+    // Annual profit share = $100 * 10% = $10
     expect(screen.getByText('$10')).toBeInTheDocument()
   })
 
@@ -47,7 +50,7 @@ describe('<InvestmentCalculator />', () => {
 
     // Total cost = 5 * 100 = $500
     expect(screen.getByText('$500')).toBeInTheDocument()
-    // Annual yield = $500 * 10% = $50
+    // Annual profit share = $500 * 10% = $50
     expect(screen.getByText('$50')).toBeInTheDocument()
   })
 })

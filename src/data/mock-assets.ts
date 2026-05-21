@@ -2,16 +2,19 @@ export interface Asset {
   id: string
   tokenName: string
   ticker: string
-  assetType: 'Agricultural' | 'Property' | 'Invoice' | 'Infrastructure'
+  category: 'Micro'
   country: string
+  countryCode: string
   flag: string
-  yieldAPY: number
+  profitShare: number
+  repaymentMultiple: number
+  useOfFunds: string
   riskScore: number
   riskRationale: string
   recommendedChain: 'Base' | 'Polygon' | 'Arbitrum'
   tokenSupply: number
   tokenPrice: number
-  investorBrief: string
+  summary: string
   description: string
   totalValue: number
   holders: number
@@ -20,109 +23,119 @@ export interface Asset {
 
 export const MOCK_ASSETS: Asset[] = [
   {
-    id: 'rice-wj01',
-    tokenName: 'West Java Rice Farm',
-    ticker: 'RICE-WJ01',
-    assetType: 'Agricultural',
-    country: 'Indonesia',
-    flag: '🇮🇩',
-    yieldAPY: 12.0,
-    riskScore: 3,
-    riskRationale: 'Stable commodity demand with certified SHM land title and 3 annual harvests.',
-    recommendedChain: 'Base',
-    tokenSupply: 50000,
-    tokenPrice: 100,
-    investorBrief:
-      'A 50-hectare certified rice farm in Cianjur, West Java with a 30-year ownership track record generating stable yields across 3 annual harvest cycles. Low-risk agricultural asset backed by documented SHM land title with fixed offtake agreements covering 70% of annual yield.',
-    description:
-      'I own a 50-hectare rice farm in Cianjur, West Java, Indonesia. We do 3 harvests per year and earn around IDR 2.8 billion annually. The land has been in my family for 30 years and has a certified land title (SHM).',
-    totalValue: 5000000,
-    holders: 142,
-    createdAt: '2026-04-10T08:00:00Z',
-  },
-  {
-    id: 'inv-bt22',
-    tokenName: 'Batam Electronics Invoice',
-    ticker: 'INV-BT22',
-    assetType: 'Invoice',
-    country: 'Indonesia',
-    flag: '🇮🇩',
-    yieldAPY: 9.5,
-    riskScore: 5,
-    riskRationale: 'Short-term receivable from verified buyer, moderate counterparty concentration risk.',
-    recommendedChain: 'Polygon',
-    tokenSupply: 10000,
-    tokenPrice: 50,
-    investorBrief:
-      'A 90-day trade receivable from a Batam-based electronics manufacturer with 5 years of on-time payment history with the debtor. Medium-risk invoice asset offering annualised returns of 9.5% with full principal return at maturity.',
-    description:
-      'Electronics SME in Batam Free Trade Zone with a $500,000 invoice to a Singapore buyer. 90-day payment terms. Buyer is a publicly listed Singapore company with AAA credit rating.',
-    totalValue: 500000,
-    holders: 87,
-    createdAt: '2026-04-18T10:30:00Z',
-  },
-  {
-    id: 'prop-cm07',
-    tokenName: 'Chiang Mai Serviced Apartment',
-    ticker: 'PROP-CM07',
-    assetType: 'Property',
+    id: 'bangkok-coffee-shop',
+    tokenName: 'Bangkok Coffee Shop',
+    ticker: 'CAFE-BKK01',
+    category: 'Micro',
     country: 'Thailand',
+    countryCode: 'TH',
     flag: '🇹🇭',
-    yieldAPY: 8.2,
+    profitShare: 14,
+    repaymentMultiple: 1.4,
+    useOfFunds: 'New espresso bar & seating',
     riskScore: 4,
-    riskRationale: 'Strong tourism demand in Chiang Mai; minor FX risk for non-THB investors.',
+    riskRationale: 'Established neighbourhood cafe with growing morning footfall; moderate dependency on a single location and seasonal tourism.',
     recommendedChain: 'Base',
-    tokenSupply: 100000,
+    tokenSupply: 10000,
     tokenPrice: 10,
-    investorBrief:
-      'A 12-unit fully-furnished serviced apartment building in the Nimman area of Chiang Mai with an 87% average occupancy rate over the last 3 years. Steady rental income from digital nomads and medical tourists provides a predictable 8.2% annual yield.',
+    summary: 'Established neighbourhood cafe expanding seating capacity and adding an espresso bar to serve growing morning footfall.',
     description:
-      'I own a 12-unit serviced apartment building in Nimman, Chiang Mai. Average occupancy is 87%. All units are fully furnished and managed by a property management company. Generating THB 2.4M annually.',
-    totalValue: 1000000,
-    holders: 213,
-    createdAt: '2026-03-22T07:15:00Z',
+      "Neighbourhood coffee shop in Bangkok's Ari district with 3 years of operation. Daily revenue averages THB 12,000. Looking to add a full espresso bar and expand seating by 20 seats to serve growing morning foot traffic.",
+    totalValue: 100000,
+    holders: 47,
+    createdAt: '2026-05-01T08:00:00Z',
   },
   {
-    id: 'palm-ph03',
-    tokenName: 'Laguna Palm Oil Plantation',
-    ticker: 'PALM-PH03',
-    assetType: 'Agricultural',
-    country: 'Philippines',
-    flag: '🇵🇭',
-    yieldAPY: 11.0,
-    riskScore: 3,
-    riskRationale: 'RSPO-certified plantation with long-term offtake contract and low weather exposure.',
-    recommendedChain: 'Arbitrum',
-    tokenSupply: 80000,
-    tokenPrice: 75,
-    investorBrief:
-      'An RSPO-certified 200-hectare palm oil plantation in Laguna province with a 10-year offtake contract with a major Philippine cooking oil producer. Reliable commodity income with 11% annual yield driven by consistent fresh fruit bunch production.',
-    description:
-      '200-hectare RSPO-certified palm oil plantation in Laguna. We have a 10-year offtake contract with a major cooking oil producer. Annual revenue is PHP 28M. Plantation is 8 years old and in peak production phase.',
-    totalValue: 6000000,
-    holders: 178,
-    createdAt: '2026-04-05T09:00:00Z',
-  },
-  {
-    id: 'loan-jk11',
-    tokenName: 'Jakarta SME Working Capital',
-    ticker: 'LOAN-JK11',
-    assetType: 'Infrastructure',
+    id: 'jakarta-bakso-vendor',
+    tokenName: 'Jakarta Bakso Vendor',
+    ticker: 'BKSO-JKT01',
+    category: 'Micro',
     country: 'Indonesia',
+    countryCode: 'ID',
     flag: '🇮🇩',
-    yieldAPY: 13.5,
-    riskScore: 6,
-    riskRationale: 'Higher yield reflects SME credit risk; mitigated by personal guarantee and inventory collateral.',
+    profitShare: 13,
+    repaymentMultiple: 1.4,
+    useOfFunds: 'Meatball soup cart & supplies',
+    riskScore: 5,
+    riskRationale: 'Popular street-food cart with consistent daily revenue; higher operational risk from vendor licensing and ingredient price volatility.',
     recommendedChain: 'Polygon',
-    tokenSupply: 20000,
-    tokenPrice: 25,
-    investorBrief:
-      'A 12-month working capital loan to a Jakarta-based food distribution SME with 8 years of operation and IDR 15B annual revenue. Higher-yield opportunity at 13.5% APY secured by inventory collateral and personal guarantee from the business owner.',
+    tokenSupply: 5000,
+    tokenPrice: 20,
+    summary: 'Street-food micro-business raising capital for a second bakso cart and bulk ingredient supplies.',
     description:
-      'Food distribution business in Jakarta with 8 years track record. Need IDR 7.5B working capital to fund inventory ahead of Ramadan peak season. Revenue IDR 15B annually. Personal guarantee provided.',
-    totalValue: 500000,
-    holders: 64,
-    createdAt: '2026-04-25T11:00:00Z',
+      'Jakarta street-food vendor specialising in bakso meatball soup. Averaging IDR 2.5M daily revenue across two busy trade routes. Capital sought for a second cart and three months of bulk ingredients.',
+    totalValue: 100000,
+    holders: 31,
+    createdAt: '2026-05-03T10:00:00Z',
+  },
+  {
+    id: 'hanoi-pho-stall',
+    tokenName: 'Hanoi Pho Stall',
+    ticker: 'PHO-HAN01',
+    category: 'Micro',
+    country: 'Vietnam',
+    countryCode: 'VN',
+    flag: '🇻🇳',
+    profitShare: 12,
+    repaymentMultiple: 1.4,
+    useOfFunds: 'Second cart & daily ingredients',
+    riskScore: 4,
+    riskRationale: 'Consistently busy neighbourhood pho stall with 5-year track record; growth constrained by single-cart capacity.',
+    recommendedChain: 'Base',
+    tokenSupply: 8000,
+    tokenPrice: 10,
+    summary: 'Popular pho stall funding a second cart to serve a new district and cover daily ingredient costs.',
+    description:
+      "Family-run pho stall in Hanoi's Ba Dinh district serving 200+ bowls daily for 5 years. Revenue VND 8M per day. Raising capital to open a second cart in a nearby district and pre-purchase daily ingredients in bulk.",
+    totalValue: 80000,
+    holders: 38,
+    createdAt: '2026-05-05T07:30:00Z',
+  },
+  {
+    id: 'cebu-retail-stall',
+    tokenName: 'Cebu Retail Stall',
+    ticker: 'RTL-CEB01',
+    category: 'Micro',
+    country: 'Philippines',
+    countryCode: 'PH',
+    flag: '🇵🇭',
+    profitShare: 15,
+    repaymentMultiple: 1.4,
+    useOfFunds: 'Inventory restock',
+    riskScore: 5,
+    riskRationale: 'Fast-moving retail stall in high-footfall Cebu market; higher profit share reflects seasonal inventory risk and peak-season concentration.',
+    recommendedChain: 'Arbitrum',
+    tokenSupply: 6000,
+    tokenPrice: 15,
+    summary: 'Small retail stall raising working capital to restock fast-moving inventory ahead of peak season.',
+    description:
+      'Retail stall in Carbon Market, Cebu selling fast-moving consumer goods and household supplies. Monthly revenue PHP 180,000. Capital raised will restock inventory ahead of the peak holiday season.',
+    totalValue: 90000,
+    holders: 29,
+    createdAt: '2026-05-08T09:00:00Z',
+  },
+  {
+    id: 'chiang-mai-tailor-shop',
+    tokenName: 'Chiang Mai Tailor Shop',
+    ticker: 'TLR-CNX01',
+    category: 'Micro',
+    country: 'Thailand',
+    countryCode: 'TH',
+    flag: '🇹🇭',
+    profitShare: 11,
+    repaymentMultiple: 1.4,
+    useOfFunds: 'New sewing machines & fabric',
+    riskScore: 3,
+    riskRationale: 'Established family tailoring business with 12 years of returning clientele; equipment investment reduces unit cost and expands monthly capacity.',
+    recommendedChain: 'Base',
+    tokenSupply: 7000,
+    tokenPrice: 10,
+    summary: 'Family tailor shop investing in additional sewing machines and fabric stock to take on more orders.',
+    description:
+      "Family tailor shop on Chiang Mai's Nimmanhaemin Road, operating for 12 years. Serves locals and tourists with custom garments. Capital will fund two additional sewing machines and a three-month fabric stock to grow monthly output from 60 to 100 garments.",
+    totalValue: 70000,
+    holders: 22,
+    createdAt: '2026-05-10T08:30:00Z',
   },
 ]
 

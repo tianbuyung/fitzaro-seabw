@@ -4,13 +4,15 @@ export type StructuredAsset = Pick<
   Asset,
   | 'tokenName'
   | 'ticker'
-  | 'assetType'
+  | 'category'
   | 'country'
-  | 'yieldAPY'
+  | 'profitShare'
+  | 'repaymentMultiple'
+  | 'useOfFunds'
   | 'riskScore'
   | 'riskRationale'
   | 'recommendedChain'
   | 'tokenSupply'
   | 'tokenPrice'
-  | 'investorBrief'
+  | 'summary'
 >

@@ -9,7 +9,7 @@ describe('<AssetForm />', () => {
     const user = userEvent.setup()
     render(<AssetForm onSubmit={onSubmit} />)
 
-    const textarea = screen.getByLabelText(/describe your asset/i)
+    const textarea = screen.getByLabelText(/describe your business/i)
     await user.type(textarea, 'too short')
 
     const submit = screen.getByRole('button', { name: /structure with ai/i })
@@ -25,8 +25,8 @@ describe('<AssetForm />', () => {
     const user = userEvent.setup()
     render(<AssetForm onSubmit={onSubmit} />)
 
-    const textarea = screen.getByLabelText(/describe your asset/i)
-    const description = 'I own a 5-hectare rice farm in West Java.'
+    const textarea = screen.getByLabelText(/describe your business/i)
+    const description = 'I run a coffee shop in Bangkok with daily revenue THB 12,000.'
     await user.type(textarea, description)
 
     const submit = screen.getByRole('button', { name: /structure with ai/i })
@@ -43,7 +43,7 @@ describe('<AssetForm />', () => {
 
     expect(screen.getByText(/0 characters \(min 10\)/i)).toBeInTheDocument()
 
-    const textarea = screen.getByLabelText(/describe your asset/i)
+    const textarea = screen.getByLabelText(/describe your business/i)
     await user.type(textarea, 'hello')
     expect(screen.getByText(/5 characters \(min 10\)/i)).toBeInTheDocument()
 

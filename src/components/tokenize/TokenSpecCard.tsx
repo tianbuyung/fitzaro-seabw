@@ -10,11 +10,8 @@ interface TokenSpecCardProps {
   isMinting?: boolean
 }
 
-const ASSET_TYPE_STYLES: Record<Asset['assetType'], string> = {
-  Agricultural: 'bg-green-100 text-green-700',
-  Property: 'bg-blue-100 text-blue-700',
-  Invoice: 'bg-purple-100 text-purple-700',
-  Infrastructure: 'bg-gray-100 text-gray-600',
+const CATEGORY_STYLES: Record<Asset['category'], string> = {
+  Micro: 'bg-amber-100 text-amber-700',
 }
 
 const CHAIN_STYLES: Record<Asset['recommendedChain'], string> = {
@@ -23,13 +20,6 @@ const CHAIN_STYLES: Record<Asset['recommendedChain'], string> = {
   Arbitrum: 'bg-sky-50 text-sky-700 ring-1 ring-sky-200',
 }
 
-/**
- * Presentational card for the AI-structured token spec.
- *
- * SRP: it only renders the spec and surfaces two intents (back, mint) as
- * callbacks. It does not own state, fetch, or persist anything — the
- * orchestrator wires those concerns up.
- */
 export function TokenSpecCard({
   spec,
   onMint,
@@ -38,7 +28,7 @@ export function TokenSpecCard({
 }: TokenSpecCardProps) {
   const totalValue = spec.tokenSupply * spec.tokenPrice
   const risk = getRiskLabel(spec.riskScore)
-  const typeBadgeClass = ASSET_TYPE_STYLES[spec.assetType]
+  const categoryBadgeClass = CATEGORY_STYLES[spec.category]
   const chainBadgeClass = CHAIN_STYLES[spec.recommendedChain]
 
   return (
@@ -59,9 +49,9 @@ export function TokenSpecCard({
 
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <span
-            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${typeBadgeClass}`}
+            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${categoryBadgeClass}`}
           >
-            {spec.assetType}
+            {spec.category}
           </span>
           <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-700">
             {spec.country}
@@ -76,9 +66,9 @@ export function TokenSpecCard({
 
       <section className="mt-6 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl bg-amber-50 p-4">
-          <p className="text-xs uppercase tracking-wide text-amber-700">Yield APY</p>
+          <p className="text-xs uppercase tracking-wide text-amber-700">Profit share</p>
           <p className="mt-1 text-3xl font-bold text-amber-600">
-            {spec.yieldAPY.toFixed(1)}%
+            {spec.profitShare.toFixed(1)}%
           </p>
         </div>
         <div className="rounded-xl border border-gray-200 p-4">
@@ -95,11 +85,17 @@ export function TokenSpecCard({
         </div>
       </section>
 
-      <section className="mt-4 grid gap-4 sm:grid-cols-2">
+      <section className="mt-4 grid gap-4 sm:grid-cols-3">
         <div className="rounded-xl border border-gray-200 p-4">
           <p className="text-xs uppercase tracking-wide text-gray-500">Token supply</p>
           <p className="mt-1 text-lg font-semibold text-gray-900">
             {spec.tokenSupply.toLocaleString()} tokens
+          </p>
+        </div>
+        <div className="rounded-xl border border-gray-200 p-4">
+          <p className="text-xs uppercase tracking-wide text-gray-500">Repayment</p>
+          <p className="mt-1 text-lg font-semibold text-gray-900">
+            {spec.repaymentMultiple}x
           </p>
         </div>
         <div className="rounded-xl border border-gray-200 p-4">
@@ -110,6 +106,13 @@ export function TokenSpecCard({
         </div>
       </section>
 
+      {spec.useOfFunds ? (
+        <section className="mt-4 rounded-xl border border-amber-100 bg-amber-50/60 p-4">
+          <p className="text-xs uppercase tracking-wide text-amber-700">Use of funds</p>
+          <p className="mt-1 text-sm font-medium text-gray-900">{spec.useOfFunds}</p>
+        </section>
+      ) : null}
+
       <section className="mt-6">
         <h3 className="text-sm font-semibold text-gray-900">Risk rationale</h3>
         <p className="mt-1 text-sm leading-relaxed text-gray-600">
@@ -118,9 +121,9 @@ export function TokenSpecCard({
       </section>
 
       <section className="mt-5">
-        <h3 className="text-sm font-semibold text-gray-900">Investor brief</h3>
+        <h3 className="text-sm font-semibold text-gray-900">Business summary</h3>
         <p className="mt-1 text-sm leading-relaxed text-gray-600">
-          {spec.investorBrief}
+          {spec.summary}
         </p>
       </section>
 

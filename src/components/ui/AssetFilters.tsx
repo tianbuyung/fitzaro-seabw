@@ -1,6 +1,6 @@
 'use client'
 
-const FILTER_OPTIONS = ['All', 'Agricultural', 'Property', 'Invoice', 'Infrastructure'] as const
+const FILTER_OPTIONS = ['All', 'Micro'] as const
 
 export type AssetFilterValue = (typeof FILTER_OPTIONS)[number]
 
@@ -11,7 +11,7 @@ interface AssetFiltersProps {
 
 export function AssetFilters({ selected, onChange }: AssetFiltersProps) {
   return (
-    <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter assets by type">
+    <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter businesses by category">
       {FILTER_OPTIONS.map((option) => {
         const isActive = selected === option
         const baseClass =

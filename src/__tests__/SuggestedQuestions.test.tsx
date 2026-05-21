@@ -15,19 +15,19 @@ describe('<SuggestedQuestions />', () => {
     const user = userEvent.setup()
     render(<SuggestedQuestions onSelect={onSelect} />)
 
-    const target = "What's the risk profile of this asset?"
+    const target = 'How does profit sharing work here?'
     await user.click(screen.getByRole('button', { name: target }))
 
     expect(onSelect).toHaveBeenCalledTimes(1)
     expect(onSelect).toHaveBeenCalledWith(target)
   })
 
-  it('calls onSelect with the yield-generation question text', async () => {
+  it('calls onSelect with the repayment question text', async () => {
     const onSelect = vi.fn()
     const user = userEvent.setup()
     render(<SuggestedQuestions onSelect={onSelect} />)
 
-    const target = 'How is the yield generated?'
+    const target = 'How is the repayment structured?'
     await user.click(screen.getByRole('button', { name: target }))
 
     expect(onSelect).toHaveBeenCalledWith(target)

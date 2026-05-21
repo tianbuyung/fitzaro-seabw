@@ -9,15 +9,8 @@ interface AssetFormProps {
 
 const MIN_CHARS = 10
 const PLACEHOLDER =
-  'e.g. I own a 5-hectare palm oil plantation in Riau, Indonesia. Annual yield is IDR 800 million. I have a certified SHM land title and stable offtake agreements with a local CPO mill.'
+  "e.g. I run a coffee shop in Bangkok's Ari district. We're open 7 days a week with daily revenue around THB 12,000. I want to add an espresso bar and expand seating. Looking to raise THB 100,000 in working capital."
 
-/**
- * Pure form component (SRP).
- *
- * Only responsibility: collect a textual asset description and hand it off
- * to the parent via onSubmit. It does not know about Claude, mutations, or
- * what happens after the submission — that's the orchestrator's job.
- */
 export function AssetForm({ onSubmit, isLoading = false }: AssetFormProps) {
   const [value, setValue] = useState<string>('')
 
@@ -38,10 +31,10 @@ export function AssetForm({ onSubmit, isLoading = false }: AssetFormProps) {
     >
       <div className="mb-6">
         <h2 className="text-xl font-bold text-gray-900 sm:text-2xl">
-          Tell us about your asset
+          Tell us about your business
         </h2>
         <p className="mt-1 text-sm text-gray-500">
-          Plain language is fine — Claude will turn it into a structured token spec.
+          Plain language is fine — Claude will structure a profit-share token for you in seconds.
         </p>
       </div>
 
@@ -49,7 +42,7 @@ export function AssetForm({ onSubmit, isLoading = false }: AssetFormProps) {
         htmlFor="asset-description"
         className="block text-sm font-medium text-gray-700"
       >
-        Describe your asset in detail — location, size, annual income, ownership documents…
+        Describe your business — what you sell, daily revenue, and how you'll use the capital
       </label>
 
       <textarea

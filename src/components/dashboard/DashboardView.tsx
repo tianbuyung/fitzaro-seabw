@@ -29,7 +29,7 @@ export function DashboardView() {
 
   const filteredAssets = useMemo(() => {
     if (filterType === FILTER_ALL) return allAssets
-    return allAssets.filter((asset) => asset.assetType === filterType)
+    return allAssets.filter((asset) => asset.category === filterType)
   }, [allAssets, filterType])
 
   const handleSelect = (asset: Asset): void => {
@@ -42,9 +42,9 @@ export function DashboardView() {
 
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <header className="mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Marketplace</h1>
+          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">Live Micro Businesses</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Tokenized real-world assets across Southeast Asia.
+            Real micro businesses sharing profit with global investors — no collateral, no banks.
           </p>
         </header>
 

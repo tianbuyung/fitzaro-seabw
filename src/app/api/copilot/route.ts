@@ -4,11 +4,12 @@ import { Asset } from '@/data/mock-assets'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-const SYSTEM_PROMPT = `You are Fitzaro AI — an expert investment advisor for Southeast Asian real-world asset tokens. 
-Answer investor questions about the provided asset clearly and honestly. 
-Be specific to the asset data given — reference actual numbers like yield, risk score, and country.
+const SYSTEM_PROMPT = `You are Fitzaro AI — an expert advisor for micro-business profit-share investments in Southeast Asia.
+Answer investor questions about the provided business clearly and honestly.
+Be specific to the business data given — reference actual numbers like profit share %, repayment multiple, and risk score.
+Explain that investors receive a share of the business's monthly net profit until repaid the stated multiple. Strong months pay more, slow months pay less. This is profit sharing, not fixed interest.
 Flag risks honestly. Never overpromise returns.
-Maximum 3 sentences per answer. 
+Maximum 3 sentences per answer.
 No crypto jargon unless the investor uses it first.
 Do not say "I" — speak as a knowledgeable advisor giving a direct answer.`
 
@@ -22,17 +23,19 @@ export async function POST(req: NextRequest) {
   const question: string = body.question
 
   const assetContext = `
-Asset: ${asset.tokenName} (${asset.ticker})
-Type: ${asset.assetType}
+Business: ${asset.tokenName}
 Country: ${asset.country}
-Annual yield: ${asset.yieldAPY}%
+Category: ${asset.category}
+Profit share: ${asset.profitShare}% of monthly net profit
+Repayment multiple: ${asset.repaymentMultiple}x (investors are repaid ${asset.repaymentMultiple}x their principal)
+Use of funds: ${asset.useOfFunds}
 Risk score: ${asset.riskScore}/10
 Risk rationale: ${asset.riskRationale}
 Token price: $${asset.tokenPrice} per token
 Total supply: ${asset.tokenSupply.toLocaleString()} tokens
 Chain: ${asset.recommendedChain}
-Description: ${asset.description}
-Investor brief: ${asset.investorBrief}
+Business description: ${asset.description}
+Summary: ${asset.summary}
 `
 
   try {
@@ -43,7 +46,7 @@ Investor brief: ${asset.investorBrief}
       messages: [
         {
           role: 'user',
-          content: `Asset context:\n${assetContext}\n\nInvestor question: ${question}`,
+          content: `Business context:\n${assetContext}\n\nInvestor question: ${question}`,
         },
       ],
     })

@@ -10,19 +10,12 @@ interface BuyModalProps {
   onClose: () => void
 }
 
-/**
- * Confirmation modal for a simulated on-chain investment.
- *
- * SRP: only owns the confirm/success UI state. No real chain call is made —
- * this is a hackathon mock; `confirmed` simply flips to a success view.
- * The parent owns whether the modal is mounted at all.
- */
 export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
   const router = useRouter()
   const [confirmed, setConfirmed] = useState<boolean>(false)
 
   const total = tokenAmount * asset.tokenPrice
-  const annualYield = (total * asset.yieldAPY) / 100
+  const annualProfitShare = (total * asset.profitShare) / 100
 
   const handleConfirm = (): void => {
     setConfirmed(true)
@@ -37,7 +30,7 @@ export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-labelledby="buy-modal-title"
+      aria-labelledby="fund-modal-title"
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
     >
       <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl ring-1 ring-gray-100 sm:p-8">
@@ -61,13 +54,13 @@ export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
               </svg>
             </span>
             <h2
-              id="buy-modal-title"
+              id="fund-modal-title"
               className="mt-4 text-xl font-semibold text-gray-900"
             >
-              Investment submitted!
+              Funding submitted!
             </h2>
             <p className="mt-2 text-sm leading-relaxed text-gray-600">
-              Your investment of{' '}
+              Your funding of{' '}
               <span className="font-semibold text-gray-900">
                 {formatCurrency(total)}
               </span>{' '}
@@ -92,19 +85,19 @@ export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
         ) : (
           <>
             <h2
-              id="buy-modal-title"
+              id="fund-modal-title"
               className="text-xl font-semibold text-gray-900"
             >
-              Confirm Investment
+              Confirm Funding
             </h2>
             <p className="mt-1 text-xs text-gray-500">
-              Review your investment details before confirming.
+              Review your funding details before confirming.
             </p>
 
             <dl className="mt-5 divide-y divide-gray-100 rounded-xl border border-gray-100 bg-gray-50/60">
               <div className="flex items-center justify-between px-4 py-3">
                 <dt className="text-xs uppercase tracking-wide text-gray-500">
-                  Asset
+                  Business
                 </dt>
                 <dd className="text-sm font-medium text-gray-900">
                   {asset.tokenName}{' '}
@@ -131,10 +124,18 @@ export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
               </div>
               <div className="flex items-center justify-between px-4 py-3">
                 <dt className="text-xs uppercase tracking-wide text-gray-500">
-                  Estimated annual yield
+                  Est. annual profit share
                 </dt>
                 <dd className="text-sm font-semibold text-[var(--color-primary)]">
-                  {formatCurrency(annualYield)}
+                  {formatCurrency(annualProfitShare)}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between px-4 py-3">
+                <dt className="text-xs uppercase tracking-wide text-gray-500">
+                  Repayment multiple
+                </dt>
+                <dd className="text-sm font-medium text-gray-900">
+                  {asset.repaymentMultiple}x
                 </dd>
               </div>
               <div className="flex items-center justify-between px-4 py-3">
@@ -160,7 +161,7 @@ export function BuyModal({ asset, tokenAmount, onClose }: BuyModalProps) {
                 onClick={handleConfirm}
                 className="inline-flex items-center justify-center rounded-lg bg-[var(--color-primary)] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-[var(--color-primary-hover)]"
               >
-                Confirm Investment
+                Confirm Funding
               </button>
             </div>
           </>
