@@ -125,7 +125,7 @@ All protected routes redirect to `/login` if not authenticated.
 - Returns: `{ answer: string }`
 - See exact system prompt in `src/app/api/copilot/route.ts`
 
-Claude model for all API routes: `claude-sonnet-4-20250514`, `max_tokens: 1000`.
+Claude model for all API routes: `claude-sonnet-4-6`, `max_tokens: 1000`.
 
 ---
 

@@ -40,7 +40,7 @@ Summary: ${asset.summary}
 
   try {
     const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1000,
       system: SYSTEM_PROMPT,
       messages: [
@@ -54,7 +54,12 @@ Summary: ${asset.summary}
     const answer = message.content[0].type === 'text' ? message.content[0].text : 'Unable to generate a response.'
     return NextResponse.json({ answer })
   } catch (err) {
-    console.error('Copilot error:', err)
-    return NextResponse.json({ error: 'AI response failed. Please try again.' }, { status: 500 })
+    const message = err instanceof Error ? err.message : 'Unknown error'
+    console.error('Copilot error:', message)
+    const isDev = process.env.NODE_ENV === 'development'
+    return NextResponse.json(
+      { error: isDev ? `AI copilot failed: ${message}` : 'AI response failed. Please try again.' },
+      { status: 500 }
+    )
   }
 }
